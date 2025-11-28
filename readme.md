@@ -63,7 +63,6 @@ pip install ultralytics deep-sort-realtime onnxruntime opencv-python
   **yolov8s.pt**    https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8s.pt   chính xác hơn
 
   **yolov8m.pt**    https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8m.pt   mạnh hơn
-  ---------------------------------------------------------------------------------------------------------------------
 
 Nguồn tổng hợp model YOLOv8:\
 https://github.com/keremberke/awesome-yolov8-models
