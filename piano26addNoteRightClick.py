@@ -587,6 +587,7 @@ class PianoApp:
         menu = tk.Menu(self.root, tearoff=0, bg="#ffffff", fg="#000000",
                        activebackground="#d0d0d0", font=("Segoe UI", 8))
 
+        menu.add_command(label="📝 Thêm ghi chú", command=lambda: self.add_note_for_specific_chord(idx))
         menu.add_command(label="➕ Thêm bản ghi trống phía sau", command=lambda: self.insert_empty_after(idx))
         menu.add_command(label="✏️  Chỉnh sửa bản ghi", command=lambda: self.load_chord_to_piano(idx))
         menu.add_command(label="📑 Nhân đôi bản ghi", command=lambda: self.duplicate_chord(idx))
@@ -599,6 +600,34 @@ class PianoApp:
             menu.post(event.x_root, event.y_root)
         finally:
             menu.grab_release()
+
+    def add_note_for_specific_chord(self, idx):
+        chord = self.chords_data[idx]
+        chord_id = chord["chord_id"]
+
+        dialog = tk.Toplevel(self.root)
+        dialog.title("Ghi chú")
+        dialog.geometry("320x120")
+
+        tk.Label(dialog, text=f"Nhập ghi chú cho chord {chord_id}:").pack(padx=8, pady=6, anchor="w")
+        entry = tk.Entry(dialog)
+        entry.pack(padx=8, pady=4, fill="x")
+        entry.focus_set()
+
+        def on_ok():
+            text = entry.get().strip()
+            if text:
+                cur.execute("INSERT INTO key_presses (note_text, chord_id) VALUES (?,?)",
+                            (text, chord_id))
+                conn.commit()
+                self.load_history()
+            dialog.destroy()
+
+        tk.Button(dialog, text="OK", command=on_ok).pack(pady=6)
+
+        dialog.transient(self.root)
+        dialog.grab_set()
+        self.root.wait_window(dialog)
 
     def load_chord_to_piano(self, chord_idx):
         chord = self.chords_data[chord_idx]
