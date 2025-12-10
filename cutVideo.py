@@ -114,7 +114,7 @@ class VideoCutter:
         save_path = filedialog.asksaveasfilename(defaultextension=".mp4", filetypes=[("MP4 files","*.mp4")])
         if not save_path:
             return
-        clip = VideoFileClip(self.video_path).subclip(self.start_time, self.end_time)
+        clip = VideoFileClip(self.video_path).subclipped(self.start_time, self.end_time)
         clip.write_videofile(save_path, codec="libx264", audio_codec="aac")
         messagebox.showinfo("Done", f"Saved to {save_path}")
 
